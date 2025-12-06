@@ -9,6 +9,17 @@ A Model Context Protocol (MCP) server that provides SQLite database interaction 
 *   **Schema Inspection**: List tables and describe table schemas.
 *   **Logging**: Automatically logs queries to daily files in the `log/` directory.
 
+## Architecture Pattern (The "Memory" System)
+
+This MCP server implements a **Context Preservation Pattern** designed for autonomous AI agents. Since agents lose context between sessions, this server enforces a self-documenting database structure.
+
+### The `_architecture_notes` Table
+The server encourages agents to maintain a "meta-table" called `_architecture_notes`.
+*   **Architect Agents** (who create tables) MUST insert notes explaining *why* a table exists and how it works.
+*   **Worker Agents** (who process data) MUST read these notes to understand the system rules without needing a huge prompt context.
+
+This turns the SQLite database into a self-contained, self-documented artifact.
+
 ## Prerequisites
 
 *   **Node.js**: v14 or higher.
