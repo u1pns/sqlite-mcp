@@ -1,0 +1,8 @@
+node_modules/
+log/
+*.log
+*.sqlite
+.env
+.DS_Store
+.gemini/
+tmp/

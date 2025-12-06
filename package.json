@@ -1,0 +1,33 @@
+{
+  "name": "sqlite-mcp",
+  "version": "1.0.0",
+  "description": "A Model Context Protocol (MCP) server for interacting with SQLite databases.",
+  "main": "index.js",
+  "bin": {
+    "sqlite-mcp": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/u1pns/sqlite-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "sqlite",
+    "database",
+    "query",
+    "gemini",
+    "claude"
+  ],
+  "author": "u1pns",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.23.0",
+    "dotenv": "^17.2.3",
+    "sqlite3": "^5.1.7"
+  }
+}
