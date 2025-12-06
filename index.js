@@ -34,9 +34,6 @@ const {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } = require('@modelcontextprotocol/sdk/types.js');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
 
 const LOG_DIR = path.join(os.tmpdir(), 'sqlite-mcp-logs');
 
