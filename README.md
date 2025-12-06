@@ -61,7 +61,9 @@ To use this server with your MCP client, you need to configure it to run the `in
     ```
     *If `SQLITE_DB_PATH` is not provided, it defaults to `database.sqlite` in the `sqlite-mcp` directory.*
 
-### Option 2: Using `npx` 
+### Option 2: Using `npx` (No installation required)
+
+You can run the server directly from GitHub without cloning the repo.
 
 #### Gemini CLI (`settings.json`)
 ```json
@@ -69,14 +71,15 @@ To use this server with your MCP client, you need to configure it to run the `in
   "mcpServers": {
     "sqlite-mcp": {
       "command": "npx",
-      "args": ["sqlite-mcp@latest"],
+      "args": ["-y", "github:u1pns/sqlite-mcp"],
       "env": {
-        "SQLITE_DB_PATH": "/path/to/my/db.sqlite"
+        "SQLITE_DB_PATH": "/absolute/path/to/my/db.sqlite"
       }
     }
   }
 }
 ```
+*Note: The `-y` flag is important to auto-accept the package installation.*
 
 ## Tools
 

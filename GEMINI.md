@@ -4,6 +4,25 @@ To use this MCP server with Gemini CLI, add the following configuration to your 
 
 ## Configuration
 
+### Option 1: Direct Run (Easiest)
+Use `npx` to run directly from GitHub.
+
+```json
+{
+  "mcpServers": {
+    "sqlite-mcp": {
+      "command": "npx",
+      "args": ["-y", "github:u1pns/sqlite-mcp"],
+      "env": {
+        "SQLITE_DB_PATH": "/absolute/path/to/your/database.sqlite"
+      }
+    }
+  }
+}
+```
+
+### Option 2: Local Install (For Development)
+
 ```json
 {
   "mcpServers": {
