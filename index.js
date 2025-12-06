@@ -9,12 +9,18 @@ const {
 } = require('@modelcontextprotocol/sdk/types.js');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
-const LOG_DIR = path.join(__dirname, 'log');
+const LOG_DIR = path.join(os.tmpdir(), 'sqlite-mcp-logs');
 
 // Ensure log directory exists
-if (!fs.existsSync(LOG_DIR)) {
-  fs.mkdirSync(LOG_DIR);
+try {
+  if (!fs.existsSync(LOG_DIR)) {
+    fs.mkdirSync(LOG_DIR);
+  }
+} catch (err) {
+  console.error(`Failed to create log directory at ${LOG_DIR}: ${err.message}`);
+  // Continue without file logging or exit? Better to continue but maybe warn.
 }
 
 // Function to log messages to a daily file
