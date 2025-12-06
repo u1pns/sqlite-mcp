@@ -16,16 +16,24 @@ To understand the **ACTUAL** structure of the existing database you are connecte
 *   **Transactions:** For multi-step operations (e.g., read + update status), trust the atomic nature of single queries or ask for transaction guidance if needed.
 
 ## 2. Context Preservation (Self-Documentation)
-**CRITICAL:** Future agents won't know *why* you designed the schema this way.
-*   **The "Architect" Agent Rule (ATOMICITY):**
+**CRITICAL:** Future agents won't know *why* you designed the schema this way. You must provide a "Continuity Handoff".
+
+*   **The "Architect" Agent Rule (ATOMICITY & DEPTH):**
     When you create a table, you **MUST** append the documentation insert in the **SAME SQL QUERY STRING**.
-    *Do NOT create a table in one turn and document it in the next.*
     
+    **Requirement:** The note must answer 3 questions:
+    1.  **What** is this table for? (Goal)
+    2.  **Which** columns are critical for logic? (e.g., status flags, state machines)
+    3.  **How** does it relate to other tables? (Foreign Keys/Logic links)
+
+    **BAD Note:** "Created items table." (Useless)
+    **GOOD Note:** "Table `items` stores job queue. `status` (pending/done) tracks progress. `external_id` links to the API source. `retries` counts failures."
+
     **Pattern:**
     ```sql
     CREATE TABLE IF NOT EXISTS _architecture_notes (id INTEGER PRIMARY KEY, note TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP);
-    CREATE TABLE IF NOT EXISTS my_table (...);
-    INSERT INTO _architecture_notes (note) VALUES ('Created my_table to store X because Y');
+    CREATE TABLE IF NOT EXISTS items (...);
+    INSERT INTO _architecture_notes (note) VALUES ('Table `items`: Job queue for URLs. `status` field ensures we dont re-scrape. `hash` field prevents duplicates. Linked to `results` via item_id.');
     ```
 
 *   **The "Worker" Agent:** Always `SELECT * FROM _architecture_notes` after connecting to understand the logic.

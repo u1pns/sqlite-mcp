@@ -249,7 +249,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       
       // Active Reinforcement: Check if a table was created and remind about documentation
       if (query.toLowerCase().includes('create table')) {
-        responseText += `\n\n⚠️ ARCHITECTURE CHECK: You just created a table. If you haven't already, you MUST now insert a row into '_architecture_notes' explaining its purpose.\nExample: INSERT INTO _architecture_notes (note) VALUES ('Created table X to store Y');`;
+        responseText += `\n\n⚠️ ARCHITECTURE CHECK: You just created a table. If you haven't already, you MUST now insert a row into '_architecture_notes'.\nYour note MUST explain:\n1. The table's Purpose.\n2. Key columns (especially status/state flags).\n3. Relationships to other data.\n\nExample: INSERT INTO _architecture_notes (note) VALUES ('Table "queue" stores pending jobs. "status" column tracks progress. Linked to "users" via user_id.');`;
       }
 
       return {
