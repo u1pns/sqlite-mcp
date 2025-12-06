@@ -61,7 +61,7 @@ To use this server with your MCP client, you need to configure it to run the `in
     ```
     *If `SQLITE_DB_PATH` is not provided, it defaults to `database.sqlite` in the `sqlite-mcp` directory.*
 
-### Option 2: Using `npx` (Once published)
+### Option 2: Using `npx` 
 
 #### Gemini CLI (`settings.json`)
 ```json
@@ -108,4 +108,25 @@ Returns the full `CREATE TABLE` statements for the entire database.
 Returns the content of `instructions.md`. Useful for re-reading best practices without reconnecting.
 
 ## License
-MIT
+
+MIT License
+
+Copyright (c) 2024 u1pns
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
