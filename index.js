@@ -1,4 +1,31 @@
 #!/usr/bin/env node
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+
+// PANIC LOGGING: Catch crashes early
+const PANIC_LOG_PATH = path.join(os.tmpdir(), 'sqlite-mcp-panic.log');
+
+function logPanic(error, context) {
+  const msg = `[${new Date().toISOString()}] [PANIC] [${context}] ${error.stack || error}\n`;
+  try {
+    fs.appendFileSync(PANIC_LOG_PATH, msg);
+  } catch (e) {
+    // Last resort: print to stderr
+    process.stderr.write('Failed to write panic log: ' + e.message + '\n');
+  }
+  process.stderr.write(msg); // Stderr is safe for MCP
+}
+
+process.on('uncaughtException', (err) => {
+  logPanic(err, 'uncaughtException');
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  logPanic(reason, 'unhandledRejection');
+});
+
 require('dotenv').config();
 const sqlite3 = require('sqlite3').verbose();
 const { Server } = require('@modelcontextprotocol/sdk/server/index.js');
