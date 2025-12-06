@@ -83,6 +83,7 @@ To use this server with your MCP client, you need to configure it to run the `in
 ### `connect_database`
 Connect to a specific SQLite database file.
 *   `db_path` (string): The absolute path to the SQLite database file.
+    *   *Note: If a relative path is provided, the database will be created inside the MCP server's directory, not the user's current directory. Always prefer absolute paths.*
 *   **Feature**: Automatically returns custom instructions and best practices (from `instructions.md`) upon successful connection.
 
 ### `read_query`

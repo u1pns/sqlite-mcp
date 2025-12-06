@@ -4,7 +4,11 @@
 The schemas and queries below are **EXAMPLES and PATTERNS** for creating new workflows.
 To understand the **ACTUAL** structure of the existing database you are connected to, you **MUST** call the tool `get_schema_ddl`. Never guess column names based on these examples if the table already exists.
 
-These guidelines are optimized for autonomous agents performing iterative tasks (e.g., scraping, job queues, data accumulation).
+## 0. Path Resolution (CRITICAL)
+*   **Always use ABSOLUTE PATHS.**
+*   The MCP server runs in its own directory. If you use a relative path (e.g., `db.sqlite`), it will be created inside the MCP server's folder, NOT the user's current working directory.
+*   **Correct:** `/Users/username/projects/my_app/data.sqlite`
+*   **Incorrect:** `data.sqlite`
 
 ## 1. Critical Rules (System Stability)
 *   **Idempotency is Key:** Always assume your script might run multiple times. Use `IF NOT EXISTS` when creating tables.
@@ -13,21 +17,18 @@ These guidelines are optimized for autonomous agents performing iterative tasks 
 
 ## 2. Context Preservation (Self-Documentation)
 **CRITICAL:** Future agents won't know *why* you designed the schema this way.
-*   **The "Architect" Agent:** If you create tables, you MUST create a table named `_architecture_notes` and insert rows explaining:
-    *   The purpose of each table.
-    *   The meaning of specific status flags (e.g., "status='ERROR_404' means retry later").
-    *   Relationships between tables.
-*   **The "Worker" Agent:** Always `SELECT * FROM _architecture_notes` after connecting to understand the logic.
+*   **The "Architect" Agent Rule (ATOMICITY):**
+    When you create a table, you **MUST** append the documentation insert in the **SAME SQL QUERY STRING**.
+    *Do NOT create a table in one turn and document it in the next.*
+    
+    **Pattern:**
+    ```sql
+    CREATE TABLE IF NOT EXISTS _architecture_notes (id INTEGER PRIMARY KEY, note TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP);
+    CREATE TABLE IF NOT EXISTS my_table (...);
+    INSERT INTO _architecture_notes (note) VALUES ('Created my_table to store X because Y');
+    ```
 
-```sql
-CREATE TABLE IF NOT EXISTS _architecture_notes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    note TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
--- Example:
-INSERT INTO _architecture_notes (note) VALUES ('Table "queue" is for raw URLs. "processed" table is for final JSON.');
-```
+*   **The "Worker" Agent:** Always `SELECT * FROM _architecture_notes` after connecting to understand the logic.
 
 ## 3. Standard Schema Pattern (Job/Item Queues)
 When creating tables to track items (URLs, emails, jobs), ALWAYS use this structure:

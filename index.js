@@ -115,7 +115,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           properties: {
             db_path: {
               type: 'string',
-              description: 'The absolute path to the SQLite database file',
+              description: 'The ABSOLUTE path to the SQLite database file (e.g., /Users/user/project/db.sqlite). Relative paths will be created in the MCP server directory, which is likely NOT what you want.',
             },
           },
           required: ['db_path'],
@@ -244,11 +244,19 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { query } = args;
       logMessage(`Executing write_query: ${query}`, 'info');
       const result = await dbRun(query);
+      
+      let responseText = JSON.stringify(result, null, 2);
+      
+      // Active Reinforcement: Check if a table was created and remind about documentation
+      if (query.toLowerCase().includes('create table')) {
+        responseText += `\n\n⚠️ ARCHITECTURE CHECK: You just created a table. If you haven't already, you MUST now insert a row into '_architecture_notes' explaining its purpose.\nExample: INSERT INTO _architecture_notes (note) VALUES ('Created table X to store Y');`;
+      }
+
       return {
         content: [
           {
             type: 'text',
-            text: JSON.stringify(result, null, 2),
+            text: responseText,
           },
         ],
       };
